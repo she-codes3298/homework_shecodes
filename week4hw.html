@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <title>Week Four Homework</title>
+    <style>
+        .typeCity {
+            background: #c4c1e0;
+            text-align: center;
+            margin: 0 auto;
+            max-width: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="typeCity">
+        <form id="searchValue">
+            <input type="text" placeholder="Type a city" id="city" autofocus="on" />
+            <input type="submit" placeholder="Search" />
+        </form>
+        <br />
+        <h1></h1>
+        <h2></h2>
+        <h3 id="temperature">17°C</h3>
+    </div>
+    <script src="temperatureConverter.js"></script>
+    <script>
+        let now = new Date();
+        let days = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Friday", "Saturday" ];
+        let day = days[ now.getDay() ];
+        let hours = now.getHours();
+        let minute = now.getMinutes();
+        let currentDate = document.querySelector( "h2" );
+        currentDate.innerHTML = day + " " + hours + ":" + minute;
+
+        function convertToCelsius ( temp ) {
+            return ( ( temp - 32 ) * 5 ) / 9;
+        }
+
+        function convertToFahrenheit ( temp ) {
+            return ( temp * 9 ) / 5 + 32;
+        }
+
+        function displayCity ( event ) {
+            event.preventDefault();
+            let city = document.querySelector( "#city" );
+            let temperatureElement = document.querySelector( "h3#temperature" );
+
+            let h1 = document.querySelector( "h1" );
+            h1.innerHTML = city.value;
+
+            let temperatureCelsius = convertToCelsius( parseFloat( temperatureElement.innerText ) );
+            let temperatureFahrenheit = convertToFahrenheit( temperatureCelsius );
+
+            temperatureElement.innerHTML = temperatureCelsius.toFixed( 2 ) + "°C / " + temperatureFahrenheit.toFixed( 2 ) + "°F";
+        }
+
+
+        let form = document.querySelector( "#searchValue" );
+        form.addEventListener( "submit", displayCity );
+    </script>
+</body>
+
+</html>
