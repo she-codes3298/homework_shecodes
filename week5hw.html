@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -32,40 +33,41 @@
         <h2></h2>
         <h3></h3>
         <h4></h4>
-    </div> <!-- Move the h3 element here -->
+    </div>
     <script>
-        let city_name; // Declare the city_name variable outside the function
+        let city_name;
 
         function displayTemp ( event ) {
             event.preventDefault();
             let showTemp = document.querySelector( "#temperature" );
             let h2 = document.querySelector( "h2" );
-            h2.innerHTML = showTemp.value; // Corrected variable name
-            city_name = showTemp.value; // Assign the value to the city_name variable
+            h2.innerHTML = showTemp.value;
+            city_name = showTemp.value;
 
             const api_key = '1214a18dee310994f0be7d35dbbd0b27';
 
             fetch( `https://api.openweathermap.org/data/2.5/weather?q=${ city_name }&appid=${ api_key }` )
                 .then( response => response.json() )
                 .then( data => {
-                    const temp = data.main.temp;
+                    const tempCelsius = Math.round( data.main.temp - 273.15 ); // Convert to Celsius
                     let h3 = document.querySelector( "h3" );
-                    h3.innerHTML = ` ${ temp } K`;
-
+                    h3.innerHTML = `${ tempCelsius } °C`;
                 } )
                 .catch( error => console.error( error ) );
         }
 
         let form = document.querySelector( "#currentTemp" );
         form.addEventListener( "submit", displayTemp );
+
         function currentLocation () {
             navigator.geolocation.getCurrentPosition( handlePosition )
         }
+
         function handlePosition ( position ) {
             console.log( position.coords.latitude );
             console.log( position.coords.longitude );
             let h4 = document.querySelector( "h4" );
-            h4.innerHTML = position.coords.latitude + "/" + position.coords.longitude;
+            h4.innerHTML = `${ position.coords.latitude }/${ position.coords.longitude }`;
         }
 
         let button = document.querySelector( "button" );
